@@ -1,6 +1,9 @@
 import React from 'react'
 import { Link } from 'react-router-dom';
 import FormModel from '../model/FormModel';
+import * as FormStatus from '../constant/FormStatus'
+import DateTimeUtil from '../utils/DateTimeUtil';
+
 const owlClass = "App";
 
 export default class ListHistory extends React.PureComponent {
@@ -41,12 +44,12 @@ export default class ListHistory extends React.PureComponent {
                             <div className={`${owlClass}__blogs__history_item_content`}>
                                 <ul>
                                     <li>ID: {item.id}</li>
-                                    <li>Thời gian: 30 giờ trước</li>
-                                    <li>Trạng thái: Đang chờ duyệt</li>
+                                    <li>Thời gian: {DateTimeUtil.diffTime(item.time)}</li>
+                                    <li>Trạng thái: {FormStatus.findName(item.status)}</li>
                                 </ul>
                             </div>
                             <div className={`${owlClass}__blogs__history_item__footer`}>
-                                <div className={`${owlClass}__blogs__history_item__footer__btn`}>Nhận quà</div>
+                                <div className={`${owlClass}__blogs__history_item__footer__btn`}>Đã nhận quà</div>
                             </div>
                         </div>
                     )

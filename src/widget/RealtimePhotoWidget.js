@@ -8,8 +8,8 @@ import UploadFileUtil from "../utils/UploadFileUtil";
 const owlClass = "popup";
 const ERROR_LOCATION = -1;
 const SUCCESS_LOCATION = 1;
+const PLEASE_ACCPET_LOCATION = 3;
 const ERROR_REALTIME_PHOTO_TIME_CREATED = -2;
-const SUCCESS_REALTIME_PHOTO = 2;
 export default class RealtimePhotoWidget extends React.PureComponent {
 
     constructor(props) {
@@ -21,6 +21,7 @@ export default class RealtimePhotoWidget extends React.PureComponent {
             step: 1,
             image: null,
         }
+        this.count_request_location = 0
         this.timeClick = 0;
     }
 
@@ -38,10 +39,15 @@ export default class RealtimePhotoWidget extends React.PureComponent {
         this.setState({ error: ERROR_LOCATION, errorMsg: error.message })
     }
 
-    componentDidMount() {
-        if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition(this.geoSuccessCallback, this.geoErrorCallback);
+    shouldComponentUpdate(nextProp, nextState) {
+        if (nextProp.open == true && this.props.open == false) {
+            if (navigator.geolocation && this.count_request_location == 0) {
+                this.count_request_location++;
+                nextState.error = PLEASE_ACCPET_LOCATION;
+                navigator.geolocation.getCurrentPosition(this.geoSuccessCallback, this.geoErrorCallback);
+            }
         }
+        return true;
     }
 
     onClickOpenCamera = () => {
@@ -50,8 +56,7 @@ export default class RealtimePhotoWidget extends React.PureComponent {
     }
 
     checkValidLastModified = (lastModified) => {
-        return true;
-        // return lastModified >= this.timeClick;
+        return lastModified >= this.timeClick;
     }
 
     onImageChange = event => {
@@ -63,6 +68,7 @@ export default class RealtimePhotoWidget extends React.PureComponent {
             if (!this.checkValidLastModified(img.lastModified)) {
                 this.setState({ error: ERROR_REALTIME_PHOTO_TIME_CREATED })
             } else {
+                this.setState({ error: 0 })
                 this.drawImagCanvas(img, this.state.location, img.lastModified)
             }
         }
@@ -99,28 +105,30 @@ export default class RealtimePhotoWidget extends React.PureComponent {
         for (var i = 0; i < byteString.length; i++) {
             ia[i] = byteString.charCodeAt(i);
         }
-        return new Blob([ab], {type: mimeString});
+        return new Blob([ab], { type: mimeString });
     }
 
     click2Upload = () => {
         UploadFileUtil.uploadImg(this.dataURItoBlob(this.state.image))
-        .then(resp => {
-            if (resp.error == 200) {
-                let json = {
-                    url : resp.data,
-                    time: this.timeClick,
-                    location: this.state.location
+            .then(resp => {
+                if (resp.error == 200) {
+                    let json = {
+                        url: resp.data,
+                        time: this.timeClick,
+                        location: this.state.location
+                    }
+                    this.props.onSubmit(json)
                 }
-                this.props.onClose(json)
-            }
-        })
-    } 
+            })
+    }
 
     render() {
         return (
             <Modal
                 open={this.props.open}
-                onClose={() => { }}
+                onClose={() => {
+                    this.props.onClose()
+                }}
                 center
                 showCloseIcon={false}
                 styles={{
@@ -159,13 +167,18 @@ export default class RealtimePhotoWidget extends React.PureComponent {
                         }
                     </div>
                     <div className={`${owlClass}__group-btn`}>
-                        {this.state.step == 2 &&
-                            <div
+                        {this.state.step == 2 && this.state.error != ERROR_LOCATION && this.state.error != PLEASE_ACCPET_LOCATION &&
+                            < div
                                 className={`${owlClass}__group-btn__item right ${this.state.error != ERROR_LOCATION ? 'btn-active' : 'btn-disable'}`}
                                 onClick={this.onClickOpenCamera}
                             >
                                 Chụp ảnh
                             </div>
+                        }
+                        {this.state.step == 2 && this.state.error == PLEASE_ACCPET_LOCATION &&
+                            <div className={`${owlClass}__group-btn__item right btn-active`} >
+                                Vui lòng chấp nhận chia sẻ vị trí
+                        </div>
                         }
                         {this.state.step == 3 &&
                             <>
@@ -185,7 +198,7 @@ export default class RealtimePhotoWidget extends React.PureComponent {
                         }
                     </div>
                 </div>
-            </Modal>
+            </Modal >
         )
     }
 }

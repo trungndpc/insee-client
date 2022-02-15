@@ -583,3 +583,12 @@
 a {
   text-decoration: none;
 }
+
+.sticky-bottom {
+  position: sticky;
+  bottom: 15px;
+}
+
+.sticky-bottom-content {
+  margin-bottom: 25px;
+}

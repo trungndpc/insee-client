@@ -14,6 +14,7 @@
     "@types/react-transition-group": "^4.4.4",
     "env-cmd": "^10.1.0",
     "material-ui": "^0.20.2",
+    "moment": "^2.29.1",
     "node-sass": "4.14.1",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",

@@ -1,23 +1,3 @@
-export interface OA {
-    cover: string;
-    name: string;
-    avatar: string;
-    oaid: string;
-    is_verified: boolean;
-    cate: JSON;
-    status: number;
-    desc: string;
-    address: Address;
-    phone: string;
-    store_status: StoreStatus;
-    website: string;
-    articles: PageArticle;
-    main_menus: Array<Menu>;
-    quick_menus: Array<Menu>;
-    is_can_call: boolean;
-    call_msg: string;
-
-}
 export interface Address {
     name: string
 }
@@ -93,3 +73,10 @@ export interface StockForm {
     promotionId: number,
     detail: string
 }
+
+export interface Promotion {
+    id : number,
+    title : string;
+    type : number;
+}
+
