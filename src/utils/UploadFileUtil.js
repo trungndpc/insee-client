@@ -2,7 +2,6 @@ import 'whatwg-fetch';
 let fetch = window.fetch;
 
 export default class UploadFileUtil {
-    
 
     static async uploadImg(photo) {
         let formData = new FormData();

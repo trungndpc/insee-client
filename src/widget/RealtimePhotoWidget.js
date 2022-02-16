@@ -19,7 +19,7 @@ export default class RealtimePhotoWidget extends React.PureComponent {
             errorMsg: null,
             location: null,
             step: 1,
-            image: null,
+            images: [],
         }
         this.count_request_location = 0
         this.timeClick = 0;
@@ -56,7 +56,8 @@ export default class RealtimePhotoWidget extends React.PureComponent {
     }
 
     checkValidLastModified = (lastModified) => {
-        return lastModified >= this.timeClick;
+        return true;
+        // return lastModified >= this.timeClick;
     }
 
     onImageChange = event => {
@@ -92,7 +93,11 @@ export default class RealtimePhotoWidget extends React.PureComponent {
                 ctx.fillText(`Location: ${location.latitude} - ${location.longitude}`, 20, 20);
                 ctx.fillText(`Time: ${new Date(lastModified).toLocaleString('vi')}`, 20, 35);
                 var dataURL = canvas.toDataURL('image/jpeg')
-                this.setState({ image: dataURL, step: 3 })
+
+                //add image to list
+                let images = [...this.state.images]
+                images.push(dataURL)
+                this.setState({ images: images, step: 3 })
             }
         }
     }
@@ -108,18 +113,29 @@ export default class RealtimePhotoWidget extends React.PureComponent {
         return new Blob([ab], { type: mimeString });
     }
 
-    click2Upload = () => {
-        UploadFileUtil.uploadImg(this.dataURItoBlob(this.state.image))
-            .then(resp => {
-                if (resp.error == 200) {
-                    let json = {
-                        url: resp.data,
-                        time: this.timeClick,
-                        location: this.state.location
-                    }
-                    this.props.onSubmit(json)
+    click2Upload = async () => {
+        let jsons = []
+        let jobs = await Promise.all(this.state.images.map(image => UploadFileUtil.uploadImg(this.dataURItoBlob(image))));
+        jobs.forEach((resp) => {
+            if (resp.error == 200) {
+                let json = {
+                    url: resp.data,
+                    time: this.timeClick,
+                    location: this.state.location
                 }
-            })
+                jsons.push(json)
+            }
+        })
+        this.props.onSubmit(jsons)
+    }
+
+    removeImg = (img) => {
+        let images = [...this.state.images]
+        images = images.filter(item => item !== img)
+        this.setState({ images: images })
+        if (images.length == 0) {
+            this.setState({ step: 2 })
+        }
     }
 
     render() {
@@ -137,7 +153,7 @@ export default class RealtimePhotoWidget extends React.PureComponent {
                         backdropFilter: "blur(54.3656px)",
                         borderRadius: "14px",
                         padding: "0",
-                        maxWidth: "80%"
+                        maxWidth: "90%"
                     },
                 }}
             >
@@ -155,16 +171,25 @@ export default class RealtimePhotoWidget extends React.PureComponent {
                         </p>
                     </div>
                     <div className="photo_preview">
-                        {this.state.image &&
-                            <>
-                                {this.state.error == ERROR_REALTIME_PHOTO_TIME_CREATED &&
-                                    <p className="error_upload_photo">Vui lòng chụp ảnh, không chọn ảnh đã có</p>
-                                }
-                                <div className="photo-upload-item">
-                                    <img src={this.state.image} />
-                                </div>
-                            </>
+                        {this.state.error == ERROR_REALTIME_PHOTO_TIME_CREATED &&
+                            <p className="error_upload_photo">Vui lòng chụp ảnh, không chọn ảnh đã có</p>
                         }
+                        <div style={{ display: 'flex', flexFlow: 'wrap', alignContent: 'space-between', justifyContent: 'space-between' }}>
+                            {this.state.error == 0 && this.state.images &&
+                                this.state.images.map((image, index) => {
+                                    return (
+                                        <>
+                                            <div key={index} className="photo-upload-item">
+                                                <span onClick={() => { this.removeImg(image) }} className="btn-x">X</span>
+                                                <img src={image} />
+                                            </div>
+                                            {(index + 1) % 2 == 0 && <div className="line-break "></div>}
+                                        </>
+
+                                    )
+                                })}
+                        </div>
+
                     </div>
                     <div className={`${owlClass}__group-btn`}>
                         {this.state.step == 2 && this.state.error != ERROR_LOCATION && this.state.error != PLEASE_ACCPET_LOCATION &&
@@ -178,7 +203,7 @@ export default class RealtimePhotoWidget extends React.PureComponent {
                         {this.state.step == 2 && this.state.error == PLEASE_ACCPET_LOCATION &&
                             <div className={`${owlClass}__group-btn__item right btn-active`} >
                                 Vui lòng chấp nhận chia sẻ vị trí
-                        </div>
+                            </div>
                         }
                         {this.state.step == 3 &&
                             <>
@@ -188,12 +213,14 @@ export default class RealtimePhotoWidget extends React.PureComponent {
                                 >
                                     Gủi ảnh
                                 </div>
-                                <div
-                                    className={`${owlClass}__group-btn__item right `}
-                                    onClick={this.onClickOpenCamera}
-                                >
-                                    Chụp lại
-                                </div>
+                                {this.state.images && this.state.images.length < 4 &&
+                                    <div
+                                        className={`${owlClass}__group-btn__item right `}
+                                        onClick={this.onClickOpenCamera}
+                                    >
+                                        Thêm ảnh
+                                    </div>
+                                }
                             </>
                         }
                     </div>

@@ -64,7 +64,7 @@ function PostPage() {
                             setIsOpenRealtimePopup(false)
                         }}
                             onSubmit={(data: any) => {
-                                let realtimePhoto: ImgRealtimePhoto = data;
+                                let realtimePhoto: Array<ImgRealtimePhoto> = data;
                                 let form: StockForm = {
                                     promotionId: post!.promotionId,
                                     detail: JSON.stringify(realtimePhoto)

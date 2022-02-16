@@ -71,10 +71,30 @@
   background: linear-gradient(90deg, red 0%, #C60000 100%) !important;
   border: none;
 }
+.photo-upload-item  {
+  display: inline-flex;
+  width: 40%;
+  margin: 10px;
+  position: relative;
+}
 
 .photo-upload-item  img{
   max-height: 65vh;
   width: 100%;
+}
+
+.photo-upload-item .btn-x {
+  background-color: #03b342;
+  width: 27px;
+  height: 20px;
+  border-radius: 50%;
+  text-align: center;
+  font-weight: 600;
+  color: #fff;
+  position: absolute;
+  padding-top: 6px;
+  top: -10px;
+  right: -10px;
 }
 
 .photo_preview {
@@ -82,12 +102,12 @@
 }
 
 .photo_preview .error_upload_photo {
-  position: absolute;
-  z-index: 7000;
   color: #fe5050;
-  top: 44%;
   text-align: center;
+  padding: 20px;
+
+}
+
+.line-break {
   width: 100%;
-  padding: 10px 0px;
-  background-color: #fff;
 }
