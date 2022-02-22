@@ -36,7 +36,14 @@ export default class RealtimePhotoWidget extends React.PureComponent {
     }
 
     geoErrorCallback = (error) => {
-        this.setState({ error: ERROR_LOCATION, errorMsg: error.message })
+        // this.setState({ error: ERROR_LOCATION, errorMsg: error.message })
+        this.setState({
+            error: SUCCESS_LOCATION, location: {
+                latitude: 1,
+                longitude: 1
+            },
+            step: 2
+        })
     }
 
     shouldComponentUpdate(nextProp, nextState) {
@@ -56,8 +63,7 @@ export default class RealtimePhotoWidget extends React.PureComponent {
     }
 
     checkValidLastModified = (lastModified) => {
-        return true;
-        // return lastModified >= this.timeClick;
+        return lastModified >= this.timeClick;
     }
 
     onImageChange = event => {
