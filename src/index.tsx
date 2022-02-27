@@ -12,14 +12,17 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import Register from './Register';
 import PostPage from './PostPage';
+import StockFormPage from './form/StockFormPage';
 
 ReactDOM.render(
   <React.StrictMode>
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<App/>} />
-        <Route path="/dang-ky" element={<Register/>} />
+        <Route path="/" element={<App />} />
+        <Route path="/dang-ky" element={<Register />} />
         <Route path="/bai-viet/:id" element={<PostPage />} />
+        <Route path="/gioi-thieu-chuong-trinh-moi" element={<PostPage />} />
+        <Route path="/khuyen-mai/:promotionId/dang-ky" element={<StockFormPage />} />
       </Routes>
     </BrowserRouter>
   </React.StrictMode>,

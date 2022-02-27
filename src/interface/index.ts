@@ -71,7 +71,9 @@ export interface ImgRealtimePhoto {
 
 export interface StockForm {
     promotionId: number,
-    detail: string
+    detail: string,
+    bags: number,
+    cements: Array<number>
 }
 
 export interface Promotion {

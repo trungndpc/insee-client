@@ -10,7 +10,7 @@ const owlClass = "App";
 
 
 function PostPage() {
-    let { id } = useParams()
+    let { id = 19 } = useParams()
     const [post, setPost] = useState<Post>()
     const [isOpenRealtimePopup, setIsOpenRealtimePopup] = useState(false)
     const [promotion, setPromotion] = useState<Promotion>()
@@ -65,11 +65,11 @@ function PostPage() {
                         }}
                             onSubmit={(data: any) => {
                                 let realtimePhoto: Array<ImgRealtimePhoto> = data;
-                                let form: StockForm = {
-                                    promotionId: post!.promotionId,
-                                    detail: JSON.stringify(realtimePhoto)
-                                }
-                                createStockPromotion(form)
+                                // let form: StockForm = {
+                                //     promotionId: post!.promotionId,
+                                //     detail: JSON.stringify(realtimePhoto)
+                                // }
+                                // createStockPromotion(form)
                                 setIsOpenRealtimePopup(false)
                             }} />
                     </>

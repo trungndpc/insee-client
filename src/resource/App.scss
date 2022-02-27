@@ -592,3 +592,87 @@ a {
 .sticky-bottom-content {
   margin-bottom: 25px;
 }
+
+
+.Stock-form {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 16px;
+  &__title {
+    padding: 40px 20px;
+    font-size: 1rem;
+    > h2 {
+      font-size: 1.2rem;
+      font-weight: 600;
+      }
+    }
+    
+    
+  &__content {
+    padding: 0 20px;
+    font-size: 1rem;
+    &___form-group {
+      padding: 15px 0px;
+      > p {
+        font-size: 1.1rem;
+        padding-bottom: 10px;
+      }
+
+      > input {
+        width: calc(100% - 20px);
+        border: 1px solid #ced4da;
+        height: 43px;
+        border-radius: 12px;
+        font-size: 1.2rem;
+        padding-left: 15px;
+      }
+
+      > select {
+        width: calc(100%);
+        border: 1px solid #ced4da;
+        background-color: #fff;
+        height: 47px;
+        border-radius: 12px;
+        font-size: 1.2rem;
+        padding-left: 15px;
+      }
+
+      &__cement-item {
+        >p {
+          font-size: 1.1rem;
+          display: inline-block;
+          padding: 16px;
+        }
+      }
+    }
+    &__group-btn {
+      height: 45px;
+      flex: 1 1;
+      background: linear-gradient( 90deg , red 0%, #C60000 100%);
+      border-radius: 100px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #ffffff;
+      font-weight: 500;
+      font-size: 15px;
+      line-height: 20px;
+      cursor: pointer;
+    }
+  }
+  
+ 
+  &__footer {
+    position: fixed;
+    width: 100vw;
+    bottom: 0;
+    background: linear-gradient(90deg, red 0%, #C60000 100%);
+    &__wrapper {
+      padding-top: 16px;
+      padding-bottom: 11px;
+      text-align: center;
+    }
+  }
+
+}

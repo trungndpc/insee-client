@@ -29,9 +29,8 @@ hr {
   border-top: solid 0.5px #e0e0e0;
 }
 
-.bv-content p {
-  line-height: 2rem;
-  
+.bv-content p, strong{
+  line-height: 2rem !important;
 }
 
 a {
