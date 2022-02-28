@@ -8,6 +8,7 @@ import { useParams } from "react-router-dom";
 import Select from "react-select";
 import * as  CementUtil from "../utils/CementUtil";
 import RealtimePhotoWidget from "../widget/RealtimePhotoWidget";
+import StockFormModel from "../model/StockFormModel";
 
 
 const owlClass = "Stock-form";
@@ -27,6 +28,28 @@ function StockFormPage() {
             .then(resp => {
                 if (resp.error == 0) {
                     setPromotion(resp.data)
+                }
+            })
+    }
+
+    const isValidForm = () => {
+        if (!form.cements || form.cements.length <= 0) {
+            setErrorMsg('Vui lòng chọn xi măng');
+            return false;
+        }
+        if (!form.bags || form.bags <= 0) {
+            setErrorMsg('Vui lòng nhập số bao xi măng')
+            return false;
+        }
+        setErrorMsg('')
+        return true;
+    }
+
+    const createStockPromotion = (form: StockForm) => {
+        StockFormModel.create(form)
+            .then(resp => {
+                if (resp.error == 0) {
+                    window.location.href = "/#ls"
                 }
             })
     }
@@ -70,7 +93,11 @@ function StockFormPage() {
                 </div>
                 <div style={{ paddingTop: '40px', textAlign: 'center' }}>
                     {errorMsg && <p className="error">{errorMsg}</p>}
-                    <div className={`${owlClass}__content__group-btn`}>Chụp hình</div>
+                    <div onClick={() => {
+                        if (isValidForm()) {
+                            setIsOpenRealtimePopup(true)
+                        }
+                    }} className={`${owlClass}__content__group-btn`}>Chụp hình</div>
                 </div>
             </div>
             <div className={`${owlClass}__footer`}>
@@ -83,7 +110,13 @@ function StockFormPage() {
             }}
                 onSubmit={(data: any) => {
                     let realtimePhoto: Array<ImgRealtimePhoto> = data;
-                    // createStockPromotion(form)
+                    let reqForm: StockForm = {
+                        promotionId: Number(promotionId),
+                        detail: JSON.stringify(realtimePhoto),
+                        bags: form.bags,
+                        cements: form.cements
+                    }
+                    createStockPromotion(reqForm)
                     setIsOpenRealtimePopup(false)
                 }} />
         </div >
