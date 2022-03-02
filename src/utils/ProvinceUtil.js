@@ -34,7 +34,6 @@ for (const key in data) {
 }
 
 
-
 export class City {
 
     static getName(id) {

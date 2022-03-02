@@ -9,6 +9,7 @@ import { City, District } from '../src/utils/ProvinceUtil'
 import wallProImg from '../src/resource/images/insee/wall-pro.png';
 import powsersImg from '../src/resource/images/insee/power-s.png';
 import lavillaImg from '../src/resource/images/insee/lavilla.png';
+import productsImg from './resource/images/insee/products.png';
 import "./resource/App.scss";
 import ListHistory from "./history";
 import { useLocation } from "react-router-dom";
@@ -72,7 +73,7 @@ function App() {
       </div>
       <div className={`${owlClass}__group-btn`}>
         <div onClick={() => setTab(1)} className={`${owlClass}__group-btn__item ${tab == 2 && 'follow'}`}>Khuyến mãi</div>
-        <div onClick={() => setTab(2)} className={`${owlClass}__group-btn__item ${tab == 1 && 'follow'}`}>Quà tặng</div>
+        <div onClick={() => setTab(2)} className={`${owlClass}__group-btn__item ${tab == 1 && 'follow'}`}>Lịch sử</div>
       </div>
       <div className={`${owlClass}__detail`}>
         <div className={`${owlClass}__detail__item`}>
@@ -99,13 +100,17 @@ function App() {
       {tab == 1 &&
         <div className={`${owlClass}__services`}>
           <hr className={`${owlClass}__services__divide`} />
-          <p className={`${owlClass}__services__title`}>Sản phẩm</p>
+          <p style={{ marginBottom: '5px' }} className={`${owlClass}__services__title`}>Sản phẩm</p>
           <div
             style={{
-              display: "flex",
+              textAlign: 'center',
+              display: "block",
             }}
           >
-            <div className={`${owlClass}__services__block`}>
+            <img onClick={() => {
+              window.location.href = "https://insee.com.vn/vn"
+            }} style={{ height: '100px' }} src={productsImg} />
+            {/* <div className={`${owlClass}__services__block`}>
               <div className={`${owlClass}__services__block__content`}>
                 <img src={wallProImg} alt="" />
               </div>
@@ -119,7 +124,7 @@ function App() {
               <div className={`${owlClass}__services__block__content`}>
                 <img src={lavillaImg} alt="" />
               </div>
-            </div>
+            </div> */}
           </div>
         </div>
       }
