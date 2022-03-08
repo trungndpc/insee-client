@@ -63,8 +63,8 @@ export default class RealtimePhotoWidget extends React.PureComponent {
     }
 
     checkValidLastModified = (lastModified) => {
-        return true;
-        // return lastModified >= this.timeClick;
+        // return true;
+        return lastModified >= this.timeClick;
     }
 
     onImageChange = event => {
