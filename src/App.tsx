@@ -37,6 +37,12 @@ function App() {
       })
   }
 
+  const scroll = (id: any) => {
+    setTimeout(() => {
+      document.getElementById(id)?.scrollIntoView()
+    }, 100)
+  }
+
   useEffect(() => {
     fetchUser()
     fetchPost()
@@ -72,7 +78,10 @@ function App() {
         </div>
       </div>
       <div className={`${owlClass}__group-btn`}>
-        <div onClick={() => setTab(1)} className={`${owlClass}__group-btn__item ${tab == 2 && 'follow'}`}>Khuyến mãi</div>
+        <div onClick={() => {
+          setTab(1)
+          scroll('khuyen-mai')
+        }} className={`${owlClass}__group-btn__item ${tab == 2 && 'follow'}`}>Khuyến mãi</div>
         <div onClick={() => setTab(2)} className={`${owlClass}__group-btn__item ${tab == 1 && 'follow'}`}>Lịch sử</div>
       </div>
       <div className={`${owlClass}__detail`}>
@@ -100,7 +109,7 @@ function App() {
       {tab == 1 &&
         <div className={`${owlClass}__services`}>
           <hr className={`${owlClass}__services__divide`} />
-          <p style={{ marginBottom: '5px' }} className={`${owlClass}__services__title`}>Sản phẩm</p>
+          <p style={{ marginBottom: '5px' }} className={`${owlClass}__services__title`}>Dịch vụ</p>
           <div
             style={{
               textAlign: 'center',

@@ -16,7 +16,7 @@ export default class ListArticle extends React.PureComponent {
 
     render() {
         return (
-            <div className={`${owlClass}__blogs`}>
+            <div id="khuyen-mai" className={`${owlClass}__blogs`}>
                 <hr className={`${owlClass}__blogs__divide`} />
                 <p className={`${owlClass}__blogs__title`}>Khuyến mãi độc quyền</p>
                 {this.state.list.map((article) => (
