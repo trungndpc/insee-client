@@ -28,7 +28,9 @@ function PostPage() {
             .then(resp => {
                 if (resp.error == 0) {
                     setPost(resp.data);
-                    fetchPromotion(resp.data.promotionId)
+                    if (resp.data.promotionId) {
+                        fetchPromotion(resp.data.promotionId)
+                    }
                 }
             })
     }

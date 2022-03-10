@@ -40,16 +40,16 @@ export interface RegisterForm {
     cements: Array<number>
 }
 
-export interface User { 
-    id : number,
-    phone : string,
-    status : number,
+export interface User {
+    id: number,
+    phone: string,
+    status: number,
     name: string,
-    avatar : string,
-    cityId : number,
-    districtId : number,
+    avatar: string,
+    cityId: number,
+    districtId: number,
     address: string,
-    products : Array<number>
+    products: Array<number>
 }
 
 export interface Post {
@@ -77,8 +77,24 @@ export interface StockForm {
 }
 
 export interface Promotion {
-    id : number,
-    title : string;
-    type : number;
+    id: number,
+    title: string;
+    type: number;
 }
 
+
+export interface Gift {
+    id: number,
+    content: string,
+    status: number,
+    title: string,
+    type: number
+}
+
+export interface CardPhoneGift {
+    id: number,
+    network: number,
+    value: number,
+    seri: string,
+    code: string
+}

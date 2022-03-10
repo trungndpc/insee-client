@@ -1,4 +1,3 @@
-// import data from './data_location.json'
 import data from './province.json'
 
 function compare(a, b) {
@@ -12,25 +11,26 @@ function compare(a, b) {
 }
 
 var listCity = [];
+var optionsCity = [];
 for (const key in data) {
     let r = { key: key, value: data[key].name }
     if (data[key].status != 0) {
         listCity.push(r);
+        optionsCity.push({ value: key, label: data[key].name })
     }
 }
-listCity.sort(function (a, b) {
-    return a.value - b.value;
-})
 listCity = listCity.sort(compare)
+optionsCity = optionsCity.sort(compare)
+
 
 var listDistrict = [];
 for (const key in data) {
     let city = data[key];
     let districts = city["districts"];
-    for (const disKey in districts) {
-        let oDistrict = { key: disKey, value: { name: districts[disKey].name, cityId: key } }
-        listDistrict.push(oDistrict);
-    }
+    districts.forEach(district => {
+        let o = { key: district.id, value: { name: district.name, cityId: key } }
+        listDistrict.push(o);
+    });
 }
 
 
@@ -48,13 +48,17 @@ export class City {
     static getList() {
         return listCity
     }
+
+    static getOptions() {
+        return optionsCity;
+    }
 }
 
 export class District {
     static getName(districtId) {
-        for (const key in listDistrict) {
-            if (key == districtId) {
-                return listDistrict[key].name
+        for (const district of listDistrict) {
+            if (district.key == districtId) {
+                return district.value.name;
             }
         }
     }
@@ -64,7 +68,7 @@ export class District {
             return []
         }
         let city = data[cityId];
-        let districts = city.districts;
+        let districts = city ? city.districts : [];
         let rs = []
         for (const district of districts) {
             let o = { key: district.id, value: district.name }
@@ -72,5 +76,19 @@ export class District {
         }
         rs = rs.sort(compare);
         return rs;
+    }
+
+    static getOption(listCityIds) {
+        let options = []
+        for (const cityId of listCityIds) {
+            let lstDistrict = this.getList(cityId)
+            if (lstDistrict) {
+                for (const ldistrict of lstDistrict) {
+                    let option = { value: ldistrict.key, label: ldistrict.value }
+                    options.push(option);
+                }
+            }
+        }
+        return options;
     }
 }

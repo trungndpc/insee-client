@@ -129,7 +129,7 @@
     .follow {
       background: #03b34214;
       color: #046c2a;
-      margin-left: 8px;
+      // margin-left: 8px;
     }
 
     .followed {
@@ -145,7 +145,7 @@
       // border: 1px solid $grey;
       border-radius: 30px;
 
-      margin-left: 8px;
+      // margin-left: 8px;
     
     }
   }
@@ -674,5 +674,35 @@ a {
       text-align: center;
     }
   }
+}
+
+.phone_card_gifts .container .item {
+    border: 1px solid #e0e0e0;
+    border-radius: 5px;
+    overflow: hidden;
+    margin: 10px 0px;
+}
+
+.phone_card_gifts .container .item .header {
+    padding: 5px;
+    font-size: 0.86rem;
+    background-color: #EE0033;
+    color: #fff;
+    font-weight: 600;
+}
+
+.phone_card_gifts .container .item .content {
+  padding: 10px;
+  text-align: center;
+}
+
+.phone_card_gifts .container .item .content input {
+  text-align: center;
+  border: hidden;
+  font-size: 1.2rem;
+  font-weight: 600;
+  letter-spacing: 3px;
+  padding: 5px;
+  padding-top: 7px;
 
 }

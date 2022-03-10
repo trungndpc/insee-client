@@ -36,21 +36,25 @@ export default class ListHistory extends React.PureComponent {
                 {this.state.list && this.state.list.map((item, index) => {
                     return (
                         <div className={`${owlClass}__blogs__history_item`}>
-                            {/* <Link to={"/bai-viet/" + item.promotionId}> */}
-                                <div className={`${owlClass}__blogs__history_item__header`}>
-                                    {item.promotionName}
-                                </div>
-                            {/* </Link> */}
-                            <div className={`${owlClass}__blogs__history_item_content`}>
+                            <div className={`${owlClass}__blogs__history_item__header`}>
+                                {item.promotionName}
+                            </div>
+                            <div onClick={() => {
+                                if (item.status == FormStatus.RECEIVED) {
+                                    window.location.href = "/qua-tang/" + item.giftId
+                                }
+                            }} className={`${owlClass}__blogs__history_item_content`}>
                                 <ul>
                                     <li>ID: {item.id}</li>
                                     <li>Thời gian: {DateTimeUtil.diffTime(item.time)}</li>
                                     <li>Trạng thái: {FormStatus.findName(item.status)}</li>
                                 </ul>
                             </div>
-                            {/* <div className={`${owlClass}__blogs__history_item__footer`}>
-                                <div className={`${owlClass}__blogs__history_item__footer__btn`}>Đã nhận quà</div>
-                            </div> */}
+                            {item.status == FormStatus.SENT_GIFT &&
+                                <div onClick={() => { window.location.href = "/qua-tang/" + item.giftId }} className={`${owlClass}__blogs__history_item__footer`}>
+                                    <div className={`${owlClass}__blogs__history_item__footer__btn`}>Quà tặng</div>
+                                </div>
+                            }
                         </div>
                     )
                 })}

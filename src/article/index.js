@@ -20,7 +20,7 @@ export default class ListArticle extends React.PureComponent {
                 <hr className={`${owlClass}__blogs__divide`} />
                 <p className={`${owlClass}__blogs__title`}>Khuyến mãi độc quyền</p>
                 {this.state.list.map((article) => (
-                    <Link to={`/bai-viet/${article.id}`}>
+                    <Link key={article.id} to={`/bai-viet/${article.id}`}>
                         <div key={article.id} className={`${owlClass}__blogs__article`}>
                             <Img src={article.cover} alt="" />
                             <p className={`${owlClass}__blogs__article__title`}>

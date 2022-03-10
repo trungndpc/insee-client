@@ -6,9 +6,6 @@ import ListArticle from "./article";
 import { User, Post } from './interface/index'
 import { City, District } from '../src/utils/ProvinceUtil'
 
-import wallProImg from '../src/resource/images/insee/wall-pro.png';
-import powsersImg from '../src/resource/images/insee/power-s.png';
-import lavillaImg from '../src/resource/images/insee/lavilla.png';
 import productsImg from './resource/images/insee/products.png';
 import "./resource/App.scss";
 import ListHistory from "./history";
@@ -81,8 +78,8 @@ function App() {
         <div onClick={() => {
           setTab(1)
           scroll('khuyen-mai')
-        }} className={`${owlClass}__group-btn__item ${tab == 2 && 'follow'}`}>Khuyến mãi</div>
-        <div onClick={() => setTab(2)} className={`${owlClass}__group-btn__item ${tab == 1 && 'follow'}`}>Lịch sử</div>
+        }} className={`${owlClass}__group-btn__item ${tab == 2 && 'follow'}`} style={{marginRight: '5px'}}>Khuyến mãi</div>
+        <div onClick={() => setTab(2)} className={`${owlClass}__group-btn__item ${tab == 1 && 'follow'}`} style={{marginLeft: '5px'}}>Lịch sử</div>
       </div>
       <div className={`${owlClass}__detail`}>
         <div className={`${owlClass}__detail__item`}>
@@ -91,7 +88,7 @@ function App() {
             alt=""
           />
           <p className={`${owlClass}__detail__item__text`}>
-            {(user.status == 8 && !user.address) ? '[Thông tin chờ duyệt]' : (`${user.address} - ${City.getName(user.cityId)}`)}
+            {(user.status == 8 && !user.address) ? '[Thông tin chờ duyệt]' : (`${user.address} - ${District.getName(user.districtId)} - ${City.getName(user.cityId)}`)}
           </p>
         </div>
         {user.phone &&
@@ -118,7 +115,7 @@ function App() {
           >
             <img onClick={() => {
               window.location.href = "https://insee.com.vn/vn"
-            }} style={{ height: '100px' }} src={productsImg} />
+            }} style={{ height: '100px', paddingRight: '15px' }} src={productsImg} />
             {/* <div className={`${owlClass}__services__block`}>
               <div className={`${owlClass}__services__block__content`}>
                 <img src={wallProImg} alt="" />

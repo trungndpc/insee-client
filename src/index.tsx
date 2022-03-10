@@ -13,6 +13,7 @@ import reportWebVitals from './reportWebVitals';
 import Register from './Register';
 import PostPage from './PostPage';
 import StockFormPage from './form/StockFormPage';
+import GiftPage from './GiftPage';
 
 ReactDOM.render(
   <React.StrictMode>
@@ -20,6 +21,7 @@ ReactDOM.render(
       <Routes>
         <Route path="/" element={<App />} />
         <Route path="/dang-ky" element={<Register />} />
+        <Route path="/qua-tang/:id" element={<GiftPage />} />
         <Route path="/bai-viet/:id" element={<PostPage />} />
         <Route path="/gioi-thieu-chuong-trinh-moi" element={<PostPage />} />
         <Route path="/khuyen-mai/:promotionId/dang-ky" element={<StockFormPage />} />
