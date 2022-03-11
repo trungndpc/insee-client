@@ -131,7 +131,7 @@ function Register() {
           <>
             <div className={`${owlClass}__content___form-group`}>
               <p>Số điện thoại</p>
-              <input value={form.phone}
+              <input value={form.phone} type="tel" pattern="(84|0[3|5|7|8|9])+([0-9]{8})\b"
                 onChange={(e: React.FormEvent<HTMLInputElement>) => { setForm({ ...form, phone: e.currentTarget.value }) }} />
             </div>
             <div className={`${owlClass}__content___form-group`}>
