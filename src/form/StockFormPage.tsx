@@ -105,7 +105,8 @@ function StockFormPage() {
                     <img src="https://ximanginsee.gapit.com.vn/html/images/logo.png" height={'30px'} alt="Insee" />
                 </div>
             </div>
-            <RealtimePhotoWidget open={isOpenRealtimePopup} onClose={() => {
+            <RealtimePhotoWidget 
+                open={isOpenRealtimePopup} onClose={() => {
                 setIsOpenRealtimePopup(false)
             }}
                 onSubmit={(data: any) => {

@@ -3,11 +3,11 @@ let fetch = window.fetch;
 
 export default class UploadFileUtil {
 
-    static async uploadImg(photo) {
+    static async uploadImg(photo, fileName) {
         let formData = new FormData();
-        formData.append("file", photo);
+        formData.append("file", photo, fileName);
 
-        const ctrl = new AbortController() 
+        const ctrl = new AbortController()
         setTimeout(() => ctrl.abort(), 5000);
 
         try {

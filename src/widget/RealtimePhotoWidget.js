@@ -1,6 +1,7 @@
 import React from "react";
 import Modal from "react-responsive-modal";
 import "react-responsive-modal/styles.css";
+import UserModel from "../model/UserModel";
 import "../popup/styles.scss";
 import UploadFileUtil from "../utils/UploadFileUtil";
 
@@ -24,6 +25,8 @@ export default class RealtimePhotoWidget extends React.PureComponent {
         this.count_request_location = 0
         this.timeClick = 0;
     }
+
+
 
     geoSuccessCallback = (position) => {
         this.setState({
@@ -121,19 +124,28 @@ export default class RealtimePhotoWidget extends React.PureComponent {
     }
 
     click2Upload = async () => {
-        let jsons = []
-        let jobs = await Promise.all(this.state.images.map(image => UploadFileUtil.uploadImg(this.dataURItoBlob(image))));
-        jobs.forEach((resp) => {
-            if (resp.error == 200) {
-                let json = {
-                    url: resp.data,
-                    time: this.timeClick,
-                    location: this.state.location
+        UserModel.getMe()
+            .then(resp => {
+                if (resp.error == 0) {
+                    let user = resp.data;
+                    let jsons = []
+                    let jobs = await Promise.all(this.state.images.map(image
+                        => UploadFileUtil.uploadImg(this.dataURItoBlob(image), user.phone + ".jpg")));
+                    jobs.forEach((resp) => {
+                        if (resp.error == 200) {
+                            let json = {
+                                url: resp.data,
+                                time: this.timeClick,
+                                location: this.state.location
+                            }
+                            jsons.push(json)
+                        }
+                    })
+                    this.props.onSubmit(jsons)
+                } else {
+                    alert("Có lỗi xảy ra, vui lòng thử lại")
                 }
-                jsons.push(json)
-            }
-        })
-        this.props.onSubmit(jsons)
+            })
     }
 
     removeImg = (img) => {
