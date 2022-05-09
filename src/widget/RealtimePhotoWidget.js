@@ -125,12 +125,11 @@ export default class RealtimePhotoWidget extends React.PureComponent {
 
     click2Upload = async () => {
         UserModel.getMe()
-            .then(resp => {
+            .then(async resp => {
                 if (resp.error == 0) {
                     let user = resp.data;
                     let jsons = []
-                    let jobs = await Promise.all(this.state.images.map(image
-                        => UploadFileUtil.uploadImg(this.dataURItoBlob(image), user.phone + ".jpg")));
+                    let jobs = await Promise.all(this.state.images.map(image => UploadFileUtil.uploadImg(this.dataURItoBlob(image), user.phone + ".jpg")));
                     jobs.forEach((resp) => {
                         if (resp.error == 200) {
                             let json = {
