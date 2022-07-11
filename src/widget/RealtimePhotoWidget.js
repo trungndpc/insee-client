@@ -50,8 +50,8 @@ export default class RealtimePhotoWidget extends React.PureComponent {
     }
 
     shouldComponentUpdate(nextProp, nextState) {
-        if (nextProp.open == true && this.props.open == false) {
-            if (navigator.geolocation && this.count_request_location == 0) {
+        if (nextProp.open === true && this.props.open === false) {
+            if (navigator.geolocation && this.count_request_location === 0) {
                 this.count_request_location++;
                 nextState.error = PLEASE_ACCPET_LOCATION;
                 navigator.geolocation.getCurrentPosition(this.geoSuccessCallback, this.geoErrorCallback);
@@ -126,12 +126,12 @@ export default class RealtimePhotoWidget extends React.PureComponent {
     click2Upload = async () => {
         UserModel.getMe()
             .then(async resp => {
-                if (resp.error == 0) {
+                if (resp.error === 0) {
                     let user = resp.data;
                     let jsons = []
                     let jobs = await Promise.all(this.state.images.map(image => UploadFileUtil.uploadImg(this.dataURItoBlob(image), user.phone + ".jpg")));
                     jobs.forEach((resp) => {
-                        if (resp.error == 200) {
+                        if (resp.error === 200) {
                             let json = {
                                 url: resp.data,
                                 time: this.timeClick,
@@ -151,7 +151,7 @@ export default class RealtimePhotoWidget extends React.PureComponent {
         let images = [...this.state.images]
         images = images.filter(item => item !== img)
         this.setState({ images: images })
-        if (images.length == 0) {
+        if (images.length === 0) {
             this.setState({ step: 2 })
         }
     }
@@ -189,19 +189,19 @@ export default class RealtimePhotoWidget extends React.PureComponent {
                         </p>
                     </div>
                     <div className="photo_preview">
-                        {this.state.error == ERROR_REALTIME_PHOTO_TIME_CREATED &&
+                        {this.state.error === ERROR_REALTIME_PHOTO_TIME_CREATED &&
                             <p className="error_upload_photo">Vui lòng chụp ảnh, không chọn ảnh đã có</p>
                         }
                         <div style={{ display: 'flex', flexFlow: 'wrap', alignContent: 'space-between', justifyContent: 'space-between' }}>
-                            {this.state.error == 0 && this.state.images &&
+                            {this.state.error === 0 && this.state.images &&
                                 this.state.images.map((image, index) => {
                                     return (
                                         <>
                                             <div key={index} className="photo-upload-item">
                                                 <span onClick={() => { this.removeImg(image) }} className="btn-x">X</span>
-                                                <img src={image} />
+                                                <img src={image} alt=""/>
                                             </div>
-                                            {(index + 1) % 2 == 0 && <div className="line-break "></div>}
+                                            {(index + 1) % 2 === 0 && <div className="line-break "></div>}
                                         </>
 
                                     )
@@ -210,20 +210,20 @@ export default class RealtimePhotoWidget extends React.PureComponent {
 
                     </div>
                     <div className={`${owlClass}__group-btn`}>
-                        {this.state.step == 2 && this.state.error != ERROR_LOCATION && this.state.error != PLEASE_ACCPET_LOCATION &&
+                        {this.state.step === 2 && this.state.error !== ERROR_LOCATION && this.state.error !== PLEASE_ACCPET_LOCATION &&
                             < div
-                                className={`${owlClass}__group-btn__item right ${this.state.error != ERROR_LOCATION ? 'btn-active' : 'btn-disable'}`}
+                                className={`${owlClass}__group-btn__item right ${this.state.error !== ERROR_LOCATION ? 'btn-active' : 'btn-disable'}`}
                                 onClick={this.onClickOpenCamera}
                             >
                                 Chụp ảnh
                             </div>
                         }
-                        {this.state.step == 2 && this.state.error == PLEASE_ACCPET_LOCATION &&
+                        {this.state.step === 2 && this.state.error === PLEASE_ACCPET_LOCATION &&
                             <div className={`${owlClass}__group-btn__item right btn-active`} >
                                 Vui lòng chấp nhận chia sẻ vị trí
                             </div>
                         }
-                        {this.state.step == 3 &&
+                        {this.state.step === 3 &&
                             <>
                                 <div
                                     className={`${owlClass}__group-btn__item right btn-active`}

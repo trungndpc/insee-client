@@ -17,7 +17,7 @@ function PostPage() {
     const fetchPromotion = (promotionId: any) => {
         PromotionModel.get(promotionId)
             .then(resp => {
-                if (resp.error == 0) {
+                if (resp.error === 0) {
                     setPromotion(resp.data)
                 }
             })
@@ -26,7 +26,7 @@ function PostPage() {
     const fetchPost = (id: any) => {
         PostModel.get(id)
             .then(resp => {
-                if (resp.error == 0) {
+                if (resp.error === 0) {
                     setPost(resp.data);
                     if (resp.data.promotionId) {
                         fetchPromotion(resp.data.promotionId)
@@ -47,7 +47,7 @@ function PostPage() {
 
                 <div className="sticky-bottom-content" dangerouslySetInnerHTML={{ __html: `${post?.content}` }}>
                 </div>
-                {promotion && promotion.type == STOCK_PROMOTION_TYPE &&
+                {promotion && promotion.type === STOCK_PROMOTION_TYPE &&
                     <div onClick={() => {
                         navigate(`/khuyen-mai/${promotion.id}/dang-ky`)
                     }} className="Register__content__group-btn sticky-bottom">Tham gia ngay</div>

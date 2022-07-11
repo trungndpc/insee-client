@@ -1,14 +1,13 @@
 import { useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import PhoneCard from "./gift/PhoneCard";
-import { CardPhoneGift, Gift, RegisterForm } from './interface/index';
+import { Gift } from './interface/index';
 import GiftModel from "./model/GiftModel";
-import { ConfirmPhonePopup, ErrorPopup } from './popup/index';
+import { ErrorPopup } from './popup/index';
 import * as GiftStatus from './constant/GiftStatus'
 import * as TypeGift from './constant/type/TypeGift'
 
 import "./resource/App.scss";
-import { Card } from "material-ui";
 const owlClass = "Register";
 
 function GiftPage() {
@@ -19,7 +18,7 @@ function GiftPage() {
   const fetchGift = () => {
     GiftModel.get(id)
       .then((resp) => {
-        if (resp.error == 0) {
+        if (resp.error === 0) {
           setGift(resp.data)
         }
       })
@@ -28,7 +27,7 @@ function GiftPage() {
   const updateStatus = () => {
     GiftModel.updateStatus(id, GiftStatus.RECEIEVED)
       .then((resp) => {
-        if (resp.error == 0) {
+        if (resp.error === 0) {
           fetchGift()
         }
       })
@@ -43,8 +42,6 @@ function GiftPage() {
   }, [])
 
 
-
-
   return (
     <div className={owlClass}>
       {isError && <ErrorPopup open={isError} onCloseModal={() => { setIsError(false) }} />}
@@ -56,7 +53,7 @@ function GiftPage() {
           </ul>
         </div>
       </div>
-      {gift?.status == GiftStatus.SENT &&
+      {gift?.status === GiftStatus.SENT &&
         <>
           <div className={`${owlClass}__content`}>
             <p style={{ lineHeight: '20px', marginBottom: '10px' }}>Chúc mừng quý cửa hàng đã nhận được phần thưởng <span style={{ fontWeight: '600' }}>{gift.title}</span></p>
@@ -69,9 +66,9 @@ function GiftPage() {
           </div>
         </>
       }
-      {gift?.status == GiftStatus.RECEIEVED &&
+      {gift?.status === GiftStatus.RECEIEVED &&
         <div className={`${owlClass}__content`}>
-          {gift.type == TypeGift.CARD_PHONE &&
+          {gift.type === TypeGift.CARD_PHONE &&
             <PhoneCard cards={gift.content} />
           }
         </div>

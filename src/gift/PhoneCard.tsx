@@ -4,7 +4,7 @@ import "../resource/App.scss";
 import * as TypeNetworkCardPhone from '../constant/type/TypeNetworkCardPhone'
 
 function PhoneCard(data: any) {
-    const [giftCards, setGiftCards] = useState<Array<CardPhoneGift>>(data.cards)
+    const [giftCards] = useState<Array<CardPhoneGift>>(data.cards)
 
     const click = (code: string) => {
         let value = encodeURIComponent('*100*' + code + '#')

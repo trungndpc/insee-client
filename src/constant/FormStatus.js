@@ -12,6 +12,7 @@ export function findName(value) {
         case REJECTED : return 'Từ chối'
         case SENT_GIFT: return 'Đã gửi quà'
         case RECEIVED : return 'Đã nhận'
+        default : return null;
     }
 }
 
@@ -20,5 +21,6 @@ export function findColor(value) {
         case INIT : return '#20c997'
         case APPROVED : return '#dc3535'
         case REJECTED : return '#999'
+        default : return null;
     }
 }

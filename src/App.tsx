@@ -1,10 +1,10 @@
-/* eslint-disable jsx-a11y/anchor-has-content */
 import { useEffect, useState } from "react";
 import UserModel from "./model/UserModel";
 import PostModel from "./model/PostModel";
 import ListArticle from "./article";
 import { User, Post } from './interface/index'
-import { City, District } from '../src/utils/ProvinceUtil'
+import { City } from '../src/common/province'
+import * as UserStatus from '../src/constant/UserStatus'
 
 import productsImg from './resource/images/insee/products.png';
 import "./resource/App.scss";
@@ -12,15 +12,20 @@ import ListHistory from "./history";
 import { useLocation } from "react-router-dom";
 const owlClass = "App";
 
+const TAB_PROMOTION = 1;
+const TAB_HISTORY = 2;
+
 function App() {
   const { hash } = useLocation();
   const [user, setUser] = useState<User>()
   const [posts, setPosts] = useState<Array<Post>>()
-  const [tab, setTab] = useState(hash == '#ls' ? 2 : 1)
+  const [tab, setTab] = useState(hash === '#ls' ? 2 : 1)
+
+
   const fetchUser = () => {
     UserModel.getMe()
       .then(resp => {
-        if (resp.error == 0) {
+        if (resp.error === 0) {
           setUser(resp.data)
         }
       })
@@ -28,7 +33,7 @@ function App() {
   const fetchPost = () => {
     PostModel.getMe()
       .then(resp => {
-        if (resp.error == 0) {
+        if (resp.error === 0) {
           setPosts(resp.data)
         }
       })
@@ -49,6 +54,7 @@ function App() {
     return <div></div>
   }
 
+  const city = new City(user.cityId)
   return (
     <div className={owlClass}>
       <div className={`${owlClass}__shop`}>
@@ -58,17 +64,14 @@ function App() {
           </div>
           <div className={`${owlClass}__shop__left__info`}>
             <div className={`${owlClass}__shop__left__info__company`}>
-              <h1 className={`${owlClass}__shop__left__info__company__name${(user.status == 8 && !user.name) ? '__waiting' : ''}`}>
-                {(user.status == 8 && !user.name) ? '[Thông tin chờ duyệt]' : user.name}
+              <h1 className={`${owlClass}__shop__left__info__company__name${(user.status === UserStatus.WAIT_APPROVAL && !user.name) ? '__waiting' : ''}`}>
+                {user.name}
               </h1>
             </div>
-            <img
-              src="https://stc-zoa-profile.zdn.vn/images/location.svg"
-              alt=""
-            />
+            <img src="https://stc-zoa-profile.zdn.vn/images/location.svg" alt="" />
             {user.cityId && user.districtId &&
               <span className={`${owlClass}__shop__left__info__enterprise`}>
-                {City.getName(user.cityId)}
+                {city && city.isValid() && city.getName()}
               </span>
             }
           </div>
@@ -76,34 +79,28 @@ function App() {
       </div>
       <div className={`${owlClass}__group-btn`}>
         <div onClick={() => {
-          setTab(1)
+          setTab(TAB_PROMOTION)
           scroll('khuyen-mai')
-        }} className={`${owlClass}__group-btn__item ${tab == 2 && 'follow'}`} style={{marginRight: '5px'}}>Khuyến mãi</div>
-        <div onClick={() => setTab(2)} className={`${owlClass}__group-btn__item ${tab == 1 && 'follow'}`} style={{marginLeft: '5px'}}>Lịch sử</div>
+        }} className={`${owlClass}__group-btn__item ${tab === TAB_HISTORY && 'follow'}`} style={{ marginRight: '5px' }}>Khuyến mãi</div>
+        <div onClick={() => setTab(TAB_HISTORY)} className={`${owlClass}__group-btn__item ${tab === TAB_PROMOTION && 'follow'}`} style={{ marginLeft: '5px' }}>Lịch sử</div>
       </div>
       <div className={`${owlClass}__detail`}>
         <div className={`${owlClass}__detail__item`}>
-          <img
-            src="https://stc-zoa-profile.zdn.vn/images/location.svg"
-            alt=""
-          />
+          <img src="https://stc-zoa-profile.zdn.vn/images/location.svg" alt="" />
           <p className={`${owlClass}__detail__item__text`}>
-            {(user.status == 8 && !user.address) ? '[Thông tin chờ duyệt]' : (`${user.address} - ${District.getName(user.districtId)} - ${City.getName(user.cityId)}`)}
+            {city && city.isValid() && `${user.address} - ${city.getDistrict()?.getName()} - ${city.getName()}`}
           </p>
         </div>
         {user.phone &&
           <div className={`${owlClass}__detail__item`}>
-            <img
-              src="https://stc-zoa-profile.zdn.vn/images/phone.svg"
-              alt=""
-            />
+            <img src="https://stc-zoa-profile.zdn.vn/images/phone.svg" alt="" />
             <p onClick={() => window.open(`tel:${user.phone}`)} className={`${owlClass}__detail__item__text primary`}>
               {user.phone}
             </p>
           </div>
         }
       </div>
-      {tab == 1 &&
+      {tab === TAB_PROMOTION &&
         <div className={`${owlClass}__services`}>
           <hr className={`${owlClass}__services__divide`} />
           <p style={{ marginBottom: '5px' }} className={`${owlClass}__services__title`}>Dịch vụ</p>
@@ -113,29 +110,12 @@ function App() {
               display: "block",
             }}
           >
-            <img onClick={() => {
-              window.location.href = "https://insee.com.vn/vn"
-            }} style={{ height: '100px', paddingRight: '15px' }} src={productsImg} />
-            {/* <div className={`${owlClass}__services__block`}>
-              <div className={`${owlClass}__services__block__content`}>
-                <img src={wallProImg} alt="" />
-              </div>
-            </div>
-            <div className={`${owlClass}__services__block`}>
-              <div className={`${owlClass}__services__block__content`}>
-                <img src={powsersImg} alt="" />
-              </div>
-            </div>
-            <div className={`${owlClass}__services__block`}>
-              <div className={`${owlClass}__services__block__content`}>
-                <img src={lavillaImg} alt="" />
-              </div>
-            </div> */}
+            <img onClick={() => { window.location.href = "https://insee.com.vn/vn" }} style={{ height: '100px', paddingRight: '15px' }} alt="" src={productsImg} />
           </div>
         </div>
       }
-      {tab == 1 && posts && <ListArticle data={posts} />}
-      {tab == 2 && <ListHistory />}
+      {tab === TAB_PROMOTION && user.status === UserStatus.APPROVED && posts && <ListArticle data={posts} />}
+      {tab === TAB_HISTORY && user.status === UserStatus.APPROVED && <ListHistory />}
     </div>
   );
 }

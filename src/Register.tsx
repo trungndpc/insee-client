@@ -1,12 +1,15 @@
 import { useState } from "react";
 import { RegisterForm } from '../src/interface/index';
-import { City, District } from '../src/utils/ProvinceUtil'
 import { getListForRetailer } from "./utils/CementUtil";
 import { ConfirmPhonePopup, ErrorPopup } from '../src/popup/index';
 import UserModel from '../src/model/UserModel'
+import { City } from '../src/common/province'
 
 import "./resource/App.scss";
 const owlClass = "Register";
+const STEP_PHONE = 1;
+const STEP_PROVINCE = 2;
+const STEP_PRODUCTS = 3;
 
 function Register() {
   const [form, setForm] = useState<RegisterForm>({} as RegisterForm)
@@ -16,9 +19,9 @@ function Register() {
   const [isError, setIsError] = useState(false)
 
   const onSelectCement = (cementId: number) => {
-    let cements = form.cements ? form.cements : [];
+    let cements = [...form.cements];
     if (cements.includes(cementId)) {
-      cements = cements.filter((e) => e != cementId);
+      cements = cements.filter((e) => e !== cementId);
     } else {
       cements.push(cementId)
     }
@@ -26,7 +29,7 @@ function Register() {
   }
 
   const validate = () => {
-    if (step == 1) {
+    if (step === STEP_PHONE) {
       let phone = form.phone;
       let name = form.name;
       if (phone == null || phone.length <= 1) {
@@ -37,15 +40,17 @@ function Register() {
         setErrorMsg('Vui lòng nhập chính xác tên của hàng của bạn')
         return false;
       }
-    } else if (step == 2) {
+
+    } else if (step === STEP_PROVINCE) {
+
       let cityId = form.cityId;
       let districtId = form.districtId;
       let address = form.address;
-      if (!cityId || cityId == 0) {
+      if (!cityId || cityId === 0) {
         setErrorMsg('Vui chọn thành phố')
         return false;
       }
-      if (!districtId || districtId == 0) {
+      if (!districtId || districtId === 0) {
         setErrorMsg('Vui lòng chọn quận huyện')
         return false;
       }
@@ -64,34 +69,35 @@ function Register() {
     setIsOpenConfirmPhonePopup(false);
     UserModel.checkPhone(form.phone)
       .then(resp => {
-        if (resp.error == 10) {
+        if (resp.error === 10) {
           setErrorMsg('Anh chị không thể sử dụng số điện thoại này để đăng ký')
           return;
         } else if (resp.error === 7) {
           UserModel.register(form)
             .then(resp => {
-              if (resp.error == 0) {
+              if (resp.error === 0) {
                 window.location.href = "/"
               } else {
                 setIsError(true)
               }
             })
         } else {
-          setStep(2)
+          setStep(STEP_PROVINCE)
         }
       })
   }
 
   const onClickButton = () => {
     if (validate()) {
-      if (step == 1) {
+      if (step === STEP_PHONE) {
         setIsOpenConfirmPhonePopup(true)
         return;
       }
-      if (step == 3) {
+
+      if (step === STEP_PROVINCE) {
         UserModel.register(form)
           .then(resp => {
-            if (resp.error == 0) {
+            if (resp.error === 0) {
               window.location.href = "/"
             } else {
               setIsError(true)
@@ -103,7 +109,7 @@ function Register() {
     }
   }
 
-
+  var city = new City(form.cityId)
   return (
     <div className={owlClass}>
       {form.phone && form.name &&
@@ -120,14 +126,14 @@ function Register() {
         <h2>ĐĂNG KÝ THÔNG TIN</h2>
         <div className="line-title">
           <ul>
-            <li className={`line-item ${step == 1 && 'active'}`}></li>
-            <li className={`line-item ${step == 2 && 'active'}`}></li>
-            <li className={`line-item ${step == 3 && 'active'}`}></li>
+            <li className={`line-item ${step === STEP_PHONE && 'active'}`}></li>
+            <li className={`line-item ${step === STEP_PROVINCE && 'active'}`}></li>
+            <li className={`line-item ${step === STEP_PRODUCTS && 'active'}`}></li>
           </ul>
         </div>
       </div>
       <div className={`${owlClass}__content`}>
-        {step == 1 &&
+        {step === STEP_PHONE &&
           <>
             <div className={`${owlClass}__content___form-group`}>
               <p>Số điện thoại</p>
@@ -141,17 +147,17 @@ function Register() {
             </div>
           </>
         }
-        {step == 2 &&
+        {step === STEP_PROVINCE &&
           <>
             <div className={`${owlClass}__content___form-group`}>
               <p>Tỉnh/thành</p>
               <select value={form.cityId} onChange={(e: React.FormEvent<HTMLSelectElement>) => { setForm({ ...form, cityId: Number(e.currentTarget.value) }) }}>
-                {(!form.cityId || form.cityId == 0) &&
+                {(!form.cityId || form.cityId === 0) &&
                   <option value={0}></option>
                 }
-                {City.getList().map((value) => {
+                {City.getOptions().map((city) => {
                   return (
-                    <option key={value.key} value={value.key}>{value.value}</option>
+                    <option key={city.value} value={city.value}>{city.label}</option>
                   )
                 })}
               </select>
@@ -160,12 +166,13 @@ function Register() {
             <div className={`${owlClass}__content___form-group`}>
               <p>Quận/huyện</p>
               <select value={form.districtId} onChange={(e: React.FormEvent<HTMLSelectElement>) => { setForm({ ...form, districtId: Number(e.currentTarget.value) }) }}>
-                {(!form.districtId || form.districtId == 0) &&
+                {(!form.districtId || form.districtId === 0) &&
                   <option value={0}></option>
                 }
-                {(form.cityId && form.cityId != 0) && District.getList(form.cityId).map((value) => {
+                {city && city.isValid() && city.getDistrictOptions().map((district) => {
                   return (
-                    <option key={value.key} value={value.key}>{value.value}</option>
+                    <option key={district.value} value={district.value}>{district.label}</option>
+
                   )
                 })}
               </select>
@@ -177,7 +184,7 @@ function Register() {
             </div>
           </>
         }
-        {step == 3 &&
+        {step === STEP_PRODUCTS &&
           <>
             <div className={`${owlClass}__content___form-group`}>
               <p>Sản phẩm</p>

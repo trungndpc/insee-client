@@ -1,5 +1,4 @@
 import React from 'react'
-import { Link } from 'react-router-dom';
 import FormModel from '../model/FormModel';
 import * as FormStatus from '../constant/FormStatus'
 import DateTimeUtil from '../utils/DateTimeUtil';
@@ -18,7 +17,7 @@ export default class ListHistory extends React.PureComponent {
     fetchHistory = () => {
         FormModel.list()
             .then(resp => {
-                if (resp.error == 0) {
+                if (resp.error === 0) {
                     this.setState({ list: resp.data })
                 }
             })
@@ -35,12 +34,12 @@ export default class ListHistory extends React.PureComponent {
                 <p className={`${owlClass}__blogs__title`}>Lịch sử</p>
                 {this.state.list && this.state.list.map((item, index) => {
                     return (
-                        <div className={`${owlClass}__blogs__history_item`}>
+                        <div key={index} className={`${owlClass}__blogs__history_item`}>
                             <div className={`${owlClass}__blogs__history_item__header`}>
                                 {item.promotionName}
                             </div>
                             <div onClick={() => {
-                                if (item.status == FormStatus.RECEIVED) {
+                                if (item.status === FormStatus.RECEIVED) {
                                     window.location.href = "/qua-tang/" + item.giftId
                                 }
                             }} className={`${owlClass}__blogs__history_item_content`}>
@@ -50,7 +49,7 @@ export default class ListHistory extends React.PureComponent {
                                     <li>Trạng thái: {FormStatus.findName(item.status)}</li>
                                 </ul>
                             </div>
-                            {item.status == FormStatus.SENT_GIFT &&
+                            {item.status === FormStatus.SENT_GIFT &&
                                 <div onClick={() => { window.location.href = "/qua-tang/" + item.giftId }} className={`${owlClass}__blogs__history_item__footer`}>
                                     <div className={`${owlClass}__blogs__history_item__footer__btn`}>Quà tặng</div>
                                 </div>

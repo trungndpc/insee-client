@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 
 import "../resource/App.scss";
-import { ImgRealtimePhoto, Promotion, RegisterForm, StockForm } from "../interface";
+import { ImgRealtimePhoto, Promotion, StockForm } from "../interface";
 import { ErrorPopup } from "../popup";
 import PromotionModel from "../model/PromotionModel";
 import { useParams } from "react-router-dom";
@@ -26,7 +26,7 @@ function StockFormPage() {
     const fetchPromotion = () => {
         PromotionModel.get(promotionId)
             .then(resp => {
-                if (resp.error == 0) {
+                if (resp.error === 0) {
                     setPromotion(resp.data)
                 }
             })
@@ -48,7 +48,7 @@ function StockFormPage() {
     const createStockPromotion = (form: StockForm) => {
         StockFormModel.create(form)
             .then(resp => {
-                if (resp.error == 0) {
+                if (resp.error === 0) {
                     window.location.href = "/#ls"
                 }
             })

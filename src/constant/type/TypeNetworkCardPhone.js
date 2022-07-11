@@ -8,6 +8,7 @@ export function findName(value) {
         case VIETTEL: return 'Viettel'
         case MOBILE: return 'Mobile'
         case VINA: return 'Vinaphone'
+        default : return null;
     }
 }
 
@@ -16,5 +17,6 @@ export function findColor(value) {
         case VIETTEL: return '#EE0033'
         case MOBILE: return '#0a4874'
         case VINA: return '#00abe9'
+        default : return '';
     }
 }

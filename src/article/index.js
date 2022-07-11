@@ -1,5 +1,4 @@
 import React from 'react'
-import DateTimeUtil from '../utils/DateTimeUtil'
 import PropTypes from 'prop-types'
 import { Link } from 'react-router-dom';
 
@@ -67,6 +66,7 @@ class Img extends React.PureComponent {
 
         return (
             <img
+                alt=''
                 src={src}
                 onError={this.onError}
                 {...props}

@@ -11,6 +11,7 @@ export function findName(value) {
         case WAITING_ACTIVE : return 'Chờ kích hoạt'
         case WAIT_APPROVAL: return 'Chờ duyệt'
         case APPROVED : return 'Đã duyệt'
+        default : return null;
     }
 }
 
@@ -21,5 +22,6 @@ export function findColor(value) {
         case WAITING_ACTIVE : return '#6f42c1'
         case WAIT_APPROVAL : return '#dc3545'
         case APPROVED: return '#28a745'
+        default : return null;
     }
 }
