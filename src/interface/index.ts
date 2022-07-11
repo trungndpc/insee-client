@@ -76,6 +76,13 @@ export interface StockForm {
     cements: Array<number>
 }
 
+export interface GreetingFriendForm {
+    promotionId: number,
+    detail: string,
+    bags: number,
+    cements: Array<number>
+}
+
 export interface Promotion {
     id: number,
     title: string;
