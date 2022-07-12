@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { STOCK_PROMOTION_TYPE } from "./constant/PromotionType";
+import { GREETING_NEW_FRIEND_PROMOTION_TYPE, STOCK_PROMOTION_TYPE } from "./constant/PromotionType";
 import { Post, Promotion } from "./interface";
 import PostModel from "./model/PostModel";
 import PromotionModel from "./model/PromotionModel";
@@ -39,6 +39,7 @@ function PostPage() {
         fetchPost(id)
     }, [])
 
+
     return (
         <div className={owlClass}>
 
@@ -49,7 +50,12 @@ function PostPage() {
                 </div>
                 {promotion && promotion.type === STOCK_PROMOTION_TYPE &&
                     <div onClick={() => {
-                        navigate(`/khuyen-mai/${promotion.id}/dang-ky`)
+                        navigate(`/khuyen-mai/stock-promotion/${promotion.id}/dang-ky`)
+                    }} className="Register__content__group-btn sticky-bottom">Tham gia ngay</div>
+                }
+                {promotion && promotion.type === GREETING_NEW_FRIEND_PROMOTION_TYPE &&
+                    <div onClick={() => {
+                        navigate(`/khuyen-mai/chao-ban-moi/${promotion.id}/dang-ky`)
                     }} className="Register__content__group-btn sticky-bottom">Tham gia ngay</div>
                 }
             </div>

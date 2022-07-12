@@ -88,7 +88,7 @@ function App() {
         <div className={`${owlClass}__detail__item`}>
           <img src="https://stc-zoa-profile.zdn.vn/images/location.svg" alt="" />
           <p className={`${owlClass}__detail__item__text`}>
-            {city && city.isValid() && `${user.address} - ${city.getDistrict()?.getName()} - ${city.getName()}`}
+            {city && city.isValid() && `${user.address} - ${city.getDistrict(user.districtId)?.getName()} - ${city.getName()}`}
           </p>
         </div>
         {user.phone &&
