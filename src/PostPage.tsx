@@ -48,11 +48,13 @@ function PostPage() {
 
                 <div className="sticky-bottom-content" dangerouslySetInnerHTML={{ __html: `${post?.content}` }}>
                 </div>
+
                 {promotion && promotion.type === STOCK_PROMOTION_TYPE &&
                     <div onClick={() => {
                         navigate(`/khuyen-mai/stock-promotion/${promotion.id}/dang-ky`)
                     }} className="Register__content__group-btn sticky-bottom">Tham gia ngay</div>
                 }
+
                 {promotion && promotion.type === GREETING_NEW_FRIEND_PROMOTION_TYPE &&
                     <div onClick={() => {
                         navigate(`/khuyen-mai/chao-ban-moi/${promotion.id}/dang-ky`)

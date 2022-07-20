@@ -62,6 +62,10 @@ export interface Post {
     promotionId: number
 }
 
+export interface Form {
+    type: number;
+    status: number
+}
 
 export interface ImgRealtimePhoto {
     url: string,
@@ -80,13 +84,15 @@ export interface GreetingFriendForm {
     promotionId: number,
     detail: string,
     bags: number,
-    cements: Array<number>
+    cements: Array<number>,
 }
 
 export interface Promotion {
     id: number,
     title: string;
     type: number;
+    status: number;
+    forms: Array<Form>;
 }
 
 

@@ -9,6 +9,7 @@ import Select from "react-select";
 import * as  CementUtil from "../utils/CementUtil";
 import RealtimePhotoWidget from "../widget/RealtimePhotoWidget";
 import GreetingFriendFormModel from "../model/GreetingFriendFormModel";
+import { APPROVED, INIT, RECEIVED, WAITING_SUBMIT } from "../constant/FormStatus";
 
 
 const owlClass = "Stock-form";
@@ -58,6 +59,8 @@ function GreetingFriendFormPage() {
         fetchPromotion()
     }, [])
 
+    const statusSubmitedForm = promotion?.forms[0].status
+    console.log(statusSubmitedForm)
 
     return (
         <div className={owlClass}>
@@ -70,35 +73,40 @@ function GreetingFriendFormPage() {
                     </ul>
                 </div>
             </div>
-            <div className={`${owlClass}__content`}>
-                <div className={`${owlClass}__content___form-group`}>
-                    <p>Loại xi măng</p>
-                    <Select
-                        onChange={(e) => {
-                            let list = e.map((x: any) => Number(x.value));
-                            setForm({ ...form, cements: list })
-                        }}
-                        styles={customStyles}
-                        isClearable={true}
-                        isMulti={true}
-                        options={CementUtil.getOption()}
-                    />
+            {statusSubmitedForm == RECEIVED && <div className={`${owlClass}__msg_center`}>Cảm ơn anh chị đã tham gia chương trình</div>}
+            {statusSubmitedForm == INIT && <div className={`${owlClass}__msg_center`}>Cảm ơn anh chị đã tham gia chương trình, vui lòng chờ duyệt đơn!</div>}
+            {statusSubmitedForm == APPROVED && <div className={`${owlClass}__msg_center`}>Cảm ơn anh chị đã tham gia chương trình, đơn của anh chị đã được duyệt, chúng tôi sẽ gửi quà tới anh chị sớm nhất có thể.</div>}
+            {statusSubmitedForm === WAITING_SUBMIT &&
+                <div className={`${owlClass}__content`}>
+                    <div className={`${owlClass}__content___form-group`}>
+                        <p>Loại xi măng</p>
+                        <Select
+                            onChange={(e) => {
+                                let list = e.map((x: any) => Number(x.value));
+                                setForm({ ...form, cements: list })
+                            }}
+                            styles={customStyles}
+                            isClearable={true}
+                            isMulti={true}
+                            options={CementUtil.getOption()}
+                        />
+                    </div>
+                    <div className={`${owlClass}__content___form-group`}>
+                        <p>Số bao</p>
+                        <input value={form.bags}
+                            type="number"
+                            onChange={(e: React.FormEvent<HTMLInputElement>) => { setForm({ ...form, bags: Number(e.currentTarget.value) }) }} />
+                    </div>
+                    <div style={{ paddingTop: '40px', textAlign: 'center' }}>
+                        {errorMsg && <p className="error">{errorMsg}</p>}
+                        <div onClick={() => {
+                            if (isValidForm()) {
+                                setIsOpenRealtimePopup(true)
+                            }
+                        }} className={`${owlClass}__content__group-btn`}>Chụp hình</div>
+                    </div>
                 </div>
-                <div className={`${owlClass}__content___form-group`}>
-                    <p>Số bao</p>
-                    <input value={form.bags}
-                        type="number"
-                        onChange={(e: React.FormEvent<HTMLInputElement>) => { setForm({ ...form, bags: Number(e.currentTarget.value) }) }} />
-                </div>
-                <div style={{ paddingTop: '40px', textAlign: 'center' }}>
-                    {errorMsg && <p className="error">{errorMsg}</p>}
-                    <div onClick={() => {
-                        if (isValidForm()) {
-                            setIsOpenRealtimePopup(true)
-                        }
-                    }} className={`${owlClass}__content__group-btn`}>Chụp hình</div>
-                </div>
-            </div>
+            }
             <div className={`${owlClass}__footer`}>
                 <div className={`${owlClass}__footer__wrapper`}>
                     <img src="https://ximanginsee.gapit.com.vn/html/images/logo.png" height={'30px'} alt="Insee" />

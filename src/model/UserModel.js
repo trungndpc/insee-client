@@ -4,7 +4,7 @@ export default class UserModel {
 
     static getMe() {
         return new Promise((resolve, reject) => {
-            APIUtil.getJSONWithCredentials(process.env.REACT_APP_DOMAIN + `/api/user/me`, resolve, reject);
+            APIUtil.getJSONWithCredentials(process.env.REACT_APP_DOMAIN + `/api/user/check-login`, resolve, reject);
         });
     }
 

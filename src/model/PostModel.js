@@ -2,9 +2,9 @@ import APIUtil from '../utils/APIUtils'
 
 export default class PostModel {
 
-    static getMe() {
+    static list() {
         return new Promise((resolve, reject) => {
-            APIUtil.getJSONWithCredentials(process.env.REACT_APP_DOMAIN + `/api/post/get-for-me`, resolve, reject);
+            APIUtil.getJSONWithCredentials(process.env.REACT_APP_DOMAIN + `/api/post/list`, resolve, reject);
         });
     }
 

@@ -31,7 +31,7 @@ function App() {
       })
   }
   const fetchPost = () => {
-    PostModel.getMe()
+    PostModel.list()
       .then(resp => {
         if (resp.error === 0) {
           setPosts(resp.data)
